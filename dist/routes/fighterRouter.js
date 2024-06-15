@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const fighterController_1 = require("../controllers/fighterController");
+const router = (0, express_1.Router)();
+router.get('/', fighterController_1.getAllFighters);
+router.get('/:fighter_id', fighterController_1.getFighterById);
+router.post('/', fighterController_1.createFighter);
+router.put('/:fighter_id', fighterController_1.updateFighter);
+router.delete('/:fighter_id', fighterController_1.deleteFighter);
+exports.default = router;
