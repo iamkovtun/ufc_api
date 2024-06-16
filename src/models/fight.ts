@@ -5,11 +5,9 @@ import { Fighter } from './fighter';
 export class Fight extends Model {
     declare fight_id: number;
     declare event_id: ForeignKey<Event['event_id']>;
-    declare fighter1_id: ForeignKey<Fighter['fighter_id']>;
-    declare fighter2_id: ForeignKey<Fighter['fighter_id']>;
+    declare winner_id: ForeignKey<Fighter['fighter_id']> | null;
     declare weight_class: string;
     declare rounds: number;
-    declare result: string;
     declare method: string;
     declare round_end: number;
     declare time_end: Date;
@@ -31,17 +29,9 @@ export function initFightModel(sequelize: Sequelize) {
                     key: 'event_id',
                 },
             },
-            fighter1_id: {
+            winner_id: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
-                references: {
-                    model: Fighter,
-                    key: 'fighter_id',
-                },
-            },
-            fighter2_id: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references: {
                     model: Fighter,
                     key: 'fighter_id',
@@ -53,10 +43,6 @@ export function initFightModel(sequelize: Sequelize) {
             },
             rounds: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            result: {
-                type: DataTypes.STRING(20),
                 allowNull: false,
             },
             method: {

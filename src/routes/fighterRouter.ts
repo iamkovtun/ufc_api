@@ -1,7 +1,11 @@
 import { Router } from 'express';
-import { getAllFighters, createFighter, updateFighter, deleteFighter, getFighterById } from '../controllers/fighterController';
+import { getAllFighters, createFighter, updateFighter, deleteFighter, getFighterById, getFighterRecord, getFighterFullRecord } from '../controllers/fighterController';
 
 const router: Router = Router();
+
+router.get('/:fighter_id/full-record', getFighterFullRecord);
+
+router.get('/:fighter_id/record', getFighterRecord);
 
 router.get('/', getAllFighters);
 

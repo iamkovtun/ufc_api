@@ -36,32 +36,12 @@ function initFighterModel(sequelize) {
             type: sequelize_1.DataTypes.DECIMAL(5, 2),
             allowNull: true,
         },
-        weight: {
-            type: sequelize_1.DataTypes.DECIMAL(5, 2),
-            allowNull: true,
-        },
         reach: {
             type: sequelize_1.DataTypes.DECIMAL(5, 2),
             allowNull: true,
         },
         stance: {
             type: sequelize_1.DataTypes.STRING(20),
-            allowNull: true,
-        },
-        record_wins: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: true,
-        },
-        record_losses: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: true,
-        },
-        record_draws: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: true,
-        },
-        record_no_contests: {
-            type: sequelize_1.DataTypes.INTEGER,
             allowNull: true,
         },
     }, { sequelize, modelName: 'Fighter' });

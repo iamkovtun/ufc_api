@@ -22,17 +22,9 @@ function initFightModel(sequelize) {
                 key: 'event_id',
             },
         },
-        fighter1_id: {
+        winner_id: {
             type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: fighter_1.Fighter,
-                key: 'fighter_id',
-            },
-        },
-        fighter2_id: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: fighter_1.Fighter,
                 key: 'fighter_id',
@@ -44,10 +36,6 @@ function initFightModel(sequelize) {
         },
         rounds: {
             type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-        },
-        result: {
-            type: sequelize_1.DataTypes.STRING(20),
             allowNull: false,
         },
         method: {

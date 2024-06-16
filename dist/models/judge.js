@@ -27,7 +27,6 @@ function initJudgeModel(sequelize) {
     }, {
         sequelize,
         modelName: 'Judge',
-        tableName: 'judges', // optional: specify the table name
     });
 }
 exports.initJudgeModel = initJudgeModel;

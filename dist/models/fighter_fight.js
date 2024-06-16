@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initFight_JudgeModel = exports.Fight_Judge = void 0;
+exports.initFighter_FightModel = exports.Fighter_Fight = void 0;
 const sequelize_1 = require("sequelize");
 const fight_1 = require("./fight");
-const judge_1 = require("./judge");
 const fighter_1 = require("./fighter");
-class Fight_Judge extends sequelize_1.Model {
+class Fighter_Fight extends sequelize_1.Model {
 }
-exports.Fight_Judge = Fight_Judge;
-function initFight_JudgeModel(sequelize) {
-    Fight_Judge.init({
+exports.Fighter_Fight = Fighter_Fight;
+function initFighter_FightModel(sequelize) {
+    Fighter_Fight.init({
         fight_id: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
@@ -17,15 +16,6 @@ function initFight_JudgeModel(sequelize) {
             references: {
                 model: fight_1.Fight,
                 key: 'fight_id',
-            },
-        },
-        judge_id: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            references: {
-                model: judge_1.Judge,
-                key: 'judge_id',
             },
         },
         fighter_id: {
@@ -37,13 +27,9 @@ function initFight_JudgeModel(sequelize) {
                 key: 'fighter_id',
             },
         },
-        score: {
-            type: sequelize_1.DataTypes.INTEGER,
-            allowNull: false,
-        },
     }, {
         sequelize,
-        modelName: 'Fight_Judge',
+        modelName: 'Fighter_Fight',
     });
 }
-exports.initFight_JudgeModel = initFight_JudgeModel;
+exports.initFighter_FightModel = initFighter_FightModel;

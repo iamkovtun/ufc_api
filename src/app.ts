@@ -15,6 +15,9 @@ import judgeRouter from './routes/judgeRouter'; // Import the new router
 
 import { initFight_JudgeModel } from './models/fight_judge';
 
+import { initFighter_FightModel } from './models/fighter_fight';
+import fighterFightRouter from './routes/fighterFightRouter'; // Import the new router
+
 import { associateModels } from './associations';
 
 
@@ -36,7 +39,7 @@ initFighterModel(sequelize);
 app.use('/events', eventRouter); // Use the new router for events
 initEventModel(sequelize);
 
-app.use('/fight', fightRouter); // Use the new router for events
+app.use('/fights', fightRouter); // Use the new router for events
 initFightModel(sequelize);
 
 app.use('/judges', judgeRouter); // Use the new router for judges
@@ -44,7 +47,15 @@ initJudgeModel(sequelize);
 
 initFight_JudgeModel(sequelize);
 
+app.use('/fighter_fights', fighterFightRouter); // Use the new router for fighter_fights
+initFighter_FightModel(sequelize);
+
+
 associateModels();
+
+
+
+
 
 app.listen(port, async () => {
     await sequelize.sync();
