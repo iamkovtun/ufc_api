@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFight = exports.updateFight = exports.createFight = exports.getFightById = exports.getAllFights = void 0;
 const fight_1 = require("../models/fight");
 const getAllFights = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filters = req.query; // Optional filters can be accessed using req.query
+    const filters = req.query;
     const fights = yield fight_1.Fight.findAll({ where: filters });
     res.json(fights);
 });

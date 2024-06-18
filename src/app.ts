@@ -14,6 +14,7 @@ import { initJudgeModel } from './models/judge';
 import judgeRouter from './routes/judgeRouter'; // Import the new router
 
 import { initFight_JudgeModel } from './models/fight_judge';
+import fightJudgeRouter from './routes/fightJudgeRouter'; // Import the new router
 
 import { initFighter_FightModel } from './models/fighter_fight';
 import fighterFightRouter from './routes/fighterFightRouter'; // Import the new router
@@ -28,6 +29,7 @@ const port = process.env.PORT || 5000;
 const sequelize = new Sequelize('postgres', 'postgres', '1111', {
     host: 'localhost',
     dialect: 'postgres',
+    schema: 'UFC'
 });
 
 app.use(express.json());
@@ -45,6 +47,7 @@ initFightModel(sequelize);
 app.use('/judges', judgeRouter); // Use the new router for judges
 initJudgeModel(sequelize);
 
+app.use('/fight_judges', fightJudgeRouter); // Use the new router for fight_judges
 initFight_JudgeModel(sequelize);
 
 app.use('/fighter_fights', fighterFightRouter); // Use the new router for fighter_fights

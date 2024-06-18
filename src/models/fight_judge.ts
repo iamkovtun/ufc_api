@@ -6,7 +6,7 @@ import { Fighter } from './fighter';
 export class Fight_Judge extends Model {
     declare fight_id: ForeignKey<Fight['fight_id']>;
     declare judge_id: ForeignKey<Judge['judge_id']>;
-    declare fighter: ForeignKey<Fighter['fighter_id']>;
+    declare fighter_id: ForeignKey<Fighter['fighter_id']>;
     declare score: number;
 }
 
@@ -47,6 +47,13 @@ export function initFight_JudgeModel(sequelize: Sequelize) {
         },{
             sequelize,
             modelName: 'Fight_Judge',
+            indexes: [
+                {
+                  unique: true,
+                  fields: ['fight_id', 'judge_id', 'fighter_id'],
+                  name: 'Fight_Judges_fight_id_judge_id_fighter_id_key',
+                },
+            ]
           });
 
 }

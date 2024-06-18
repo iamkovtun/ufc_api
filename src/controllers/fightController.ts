@@ -3,30 +3,39 @@ import { Fight } from '../models/fight';
 
 interface FightRequest extends Request {
     body: {
+        fight_id: string;
         event_id: string;
-        fighter1_id: string;
-        fighter2_id: string;
+        winner_id: string;
         weight_class: string;
-        rounds: number;
-        result: string;
+        rounds: string;
         method: string;
-        round_end: number;
+        round_end: string;
         time_end: string;
     };
     params: {
         fight_id: string;
     };
+    query: {
+        fight_id: string;
+        event_id: string;
+        winner_id: string;
+        weight_class: string;
+        rounds: string;
+        method: string;
+        round_end: string;
+        time_end: string;
+    };
 }
 
 export const getAllFights = async (req: Request, res: Response): Promise<void> => {
-    const filters = req.query; // Optional filters can be accessed using req.query
-    const fights = await Fight.findAll({ where: filters });
+    const filters = req.query; 
+    const fights:Fight[] = await Fight.findAll({ where: filters });
     res.json(fights);
 };
 
 export const getFightById = async (req: FightRequest, res: Response): Promise<void> => {
     const { fight_id } = req.params;
-    const fight = await Fight.findByPk(fight_id);
+    const fight:Fight | null = await Fight.findByPk(fight_id);
     if (fight) {
         res.json(fight);
     } else {
@@ -36,7 +45,7 @@ export const getFightById = async (req: FightRequest, res: Response): Promise<vo
 
 export const createFight = async (req: FightRequest, res: Response): Promise<void> => {
     const createdAttributes = req.body;
-    const fight = await Fight.create({
+    const fight:Fight = await Fight.create({
         ...createdAttributes
     });
     res.json(fight);
@@ -45,7 +54,7 @@ export const createFight = async (req: FightRequest, res: Response): Promise<voi
 export const updateFight = async (req: FightRequest, res: Response): Promise<void> => {
     const { fight_id } = req.params;
     const updatedAttributes = req.body;
-    const fight = await Fight.findByPk(fight_id);
+    const fight:Fight | null = await Fight.findByPk(fight_id);
     if (fight) {
         Object.assign(fight, updatedAttributes);
         await fight.save();
@@ -57,7 +66,7 @@ export const updateFight = async (req: FightRequest, res: Response): Promise<voi
 
 export const deleteFight = async (req: FightRequest, res: Response): Promise<void> => {
     const { fight_id } = req.params;
-    const fight = await Fight.findByPk(fight_id);
+    const fight:Fight | null = await Fight.findByPk(fight_id);
     if (fight) {
         await fight.destroy();
         res.status(204).send();

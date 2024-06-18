@@ -9,17 +9,21 @@ interface FighterFightRequest extends Request {
     params: {
         fighter_fight_id: string;
     };
+    query: {
+        fight_id: string;
+        fighter_id: string;
+    };
 }
 
 export const getAllFighterFights = async (req: Request, res: Response): Promise<void> => {
-    const filters = req.query; // Optional filters can be accessed using req.query
-    const fighterFights = await Fighter_Fight.findAll({ where: filters });
+    const filters = req.query;
+    const fighterFights:Fighter_Fight[] = await Fighter_Fight.findAll({ where: filters });
     res.json(fighterFights);
 };
 
 export const getFighterFightById = async (req: FighterFightRequest, res: Response): Promise<void> => {
     const { fighter_fight_id } = req.params;
-    const fighterFight = await Fighter_Fight.findByPk(fighter_fight_id);
+    const fighterFight:Fighter_Fight | null = await Fighter_Fight.findByPk(fighter_fight_id);
     if (fighterFight) {
         res.json(fighterFight);
     } else {
@@ -29,7 +33,7 @@ export const getFighterFightById = async (req: FighterFightRequest, res: Respons
 
 export const createFighterFight = async (req: FighterFightRequest, res: Response): Promise<void> => {
     const createdAttributes = req.body;
-    const fighterFight = await Fighter_Fight.create({
+    const fighterFight:Fighter_Fight = await Fighter_Fight.create({
         ...createdAttributes
     });
     res.json(fighterFight);
@@ -38,7 +42,7 @@ export const createFighterFight = async (req: FighterFightRequest, res: Response
 export const updateFighterFight = async (req: FighterFightRequest, res: Response): Promise<void> => {
     const { fighter_fight_id } = req.params;
     const updatedAttributes = req.body;
-    const fighterFight = await Fighter_Fight.findByPk(fighter_fight_id);
+    const fighterFight:Fighter_Fight | null = await Fighter_Fight.findByPk(fighter_fight_id);
     if (fighterFight) {
         Object.assign(fighterFight, updatedAttributes);
         await fighterFight.save();
@@ -50,7 +54,7 @@ export const updateFighterFight = async (req: FighterFightRequest, res: Response
 
 export const deleteFighterFight = async (req: FighterFightRequest, res: Response): Promise<void> => {
     const { fighter_fight_id } = req.params;
-    const fighterFight = await Fighter_Fight.findByPk(fighter_fight_id);
+    const fighterFight:Fighter_Fight | null = await Fighter_Fight.findByPk(fighter_fight_id);
     if (fighterFight) {
         await fighterFight.destroy();
         res.status(204).send();

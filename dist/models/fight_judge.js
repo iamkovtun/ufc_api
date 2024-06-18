@@ -44,6 +44,13 @@ function initFight_JudgeModel(sequelize) {
     }, {
         sequelize,
         modelName: 'Fight_Judge',
+        indexes: [
+            {
+                unique: true,
+                fields: ['fight_id', 'judge_id', 'fighter_id'],
+                name: 'Fight_Judges_fight_id_judge_id_fighter_id_key',
+            },
+        ]
     });
 }
 exports.initFight_JudgeModel = initFight_JudgeModel;

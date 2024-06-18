@@ -10,17 +10,22 @@ interface JudgeRequest extends Request {
     params: {
         judge_id: string;
     };
+    query: {
+        first_name: string;
+        last_name: string;
+        nationality: string;
+    };
 }
 
 export const getAllJudges = async (req: Request, res: Response): Promise<void> => {
     const filters = req.query; // Optional filters can be accessed using req.query
-    const judges = await Judge.findAll({ where: filters });
+    const judges: Judge[] = await Judge.findAll({ where: filters });
     res.json(judges);
 };
 
 export const getJudgeById = async (req: JudgeRequest, res: Response): Promise<void> => {
     const { judge_id } = req.params;
-    const judge = await Judge.findByPk(judge_id);
+    const judge: Judge | null = await Judge.findByPk(judge_id);
     if (judge) {
         res.json(judge);
     } else {
@@ -30,7 +35,7 @@ export const getJudgeById = async (req: JudgeRequest, res: Response): Promise<vo
 
 export const createJudge = async (req: JudgeRequest, res: Response): Promise<void> => {
     const { first_name, last_name, nationality } = req.body;
-    const judge = await Judge.create({
+    const judge: Judge = await Judge.create({
         first_name,
         last_name,
         nationality
@@ -41,7 +46,7 @@ export const createJudge = async (req: JudgeRequest, res: Response): Promise<voi
 export const updateJudge = async (req: JudgeRequest, res: Response): Promise<void> => {
     const { judge_id } = req.params;
     const updatedAttributes = req.body;
-    const judge = await Judge.findByPk(judge_id);
+    const judge: Judge | null = await Judge.findByPk(judge_id);
     if (judge) {
         Object.assign(judge, updatedAttributes);
         await judge.save();
@@ -53,7 +58,7 @@ export const updateJudge = async (req: JudgeRequest, res: Response): Promise<voi
 
 export const deleteJudge = async (req: JudgeRequest, res: Response): Promise<void> => {
     const { judge_id } = req.params;
-    const judge = await Judge.findByPk(judge_id);
+    const judge: Judge | null = await Judge.findByPk(judge_id);
     if (judge) {
         await judge.destroy();
         res.status(204).send();
