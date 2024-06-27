@@ -13,8 +13,8 @@ import fightRouter from './routes/fightRouter'; // Import the new router
 import { initJudgeModel } from './models/judge';
 import judgeRouter from './routes/judgeRouter'; // Import the new router
 
-import { initFight_JudgeModel } from './models/fight_judge';
-import fightJudgeRouter from './routes/fightJudgeRouter'; // Import the new router
+import { initScorecardModel } from './models/scorecard';
+import ScorecardRouter from './routes/scorecardRouter'; // Import the new router
 
 import { initFighter_FightModel } from './models/fighter_fight';
 import fighterFightRouter from './routes/fighterFightRouter'; // Import the new router
@@ -47,8 +47,8 @@ initFightModel(sequelize);
 app.use('/judges', judgeRouter); // Use the new router for judges
 initJudgeModel(sequelize);
 
-app.use('/fight_judges', fightJudgeRouter); // Use the new router for fight_judges
-initFight_JudgeModel(sequelize);
+app.use('/scorecard', ScorecardRouter); // Use the new router for scorecard_id
+initScorecardModel(sequelize);
 
 app.use('/fighter_fights', fighterFightRouter); // Use the new router for fighter_fights
 initFighter_FightModel(sequelize);
@@ -57,10 +57,23 @@ initFighter_FightModel(sequelize);
 associateModels();
 
 
+// temp function to update scorecard constraints
+async function updateScorecardConstraints() {
+    try {
+        await sequelize.query('ALTER TABLE "UFC"."Scorecards" DROP CONSTRAINT IF EXISTS "Scorecards_fight_id_judge_id_key";');
+        console.log('Old constraint dropped successfully.');
 
+        await sequelize.query('ALTER TABLE "UFC"."Scorecards" ADD CONSTRAINT "unique_fight_judge_fighter_v4" UNIQUE ("fight_id", "judge_id", "fighter_id");');
+        console.log('New constraint added successfully.');
 
+        console.log('Scorecard constraints updated successfully.');
+    } catch (error) {
+        console.error('Error updating Scorecard constraints:', error);
+    }
+}
 
 app.listen(port, async () => {
     await sequelize.sync();
+    await updateScorecardConstraints();// temp function to update scorecard constraints
     console.log(`Server is running on http://localhost:${port}`);
 });

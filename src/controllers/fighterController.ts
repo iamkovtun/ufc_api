@@ -4,7 +4,7 @@ import { Fight } from '../models/fight';
 import { Fighter_Fight } from '../models/fighter_fight';
 import {  Op } from 'sequelize';
 import { Event } from '../models/event';
-import { Fight_Judge } from '../models/fight_judge';
+import { Scorecard } from '../models/scorecard';
 
 interface FighterRequest extends Request {
     body: {
@@ -40,7 +40,7 @@ interface FighterRecord {
     weight_class: string;
     time_end: Date;
     round_end: number;
-    scorecards: Fight_Judge[] | null;
+    scorecards: Scorecard[] | null;
     event_name: string | null;
     method: string;
     result: string;
@@ -59,8 +59,8 @@ export const getFighterFullRecord = async (req: FighterRequest, res: Response): 
         } else if (fight.winner_id === null) {
             if (fight.method === 'Draw') {
                 return "Draw";;
-            } else if (fight.method === 'No Contest') {
-                return "No Contest";;
+            } else if (fight.method === 'No contest') {
+                return "No contest";;
             }
         }
         return 'no data';
@@ -97,10 +97,9 @@ export const getFighterFullRecord = async (req: FighterRequest, res: Response): 
             });
             
             
-            const scorecards: Fight_Judge[] | null = await Fight_Judge.findAll({
+            const scorecards: Scorecard[] | null = await Scorecard.findAll({
                 where: { 
                     fight_id: fight.fight_id,
-                    fighter_id: fighterId,
                 }
             });
 
@@ -148,7 +147,7 @@ export const getFighterRecord = async (req: FighterRequest, res: Response): Prom
                     } else if (fight.winner_id === null) {
                         if (fight.method === 'Draw') {
                             draws++;
-                        } else if (fight.method === 'No Contest') {
+                        } else if (fight.method === 'No contest') {
                             noContests++;
                         }
         
