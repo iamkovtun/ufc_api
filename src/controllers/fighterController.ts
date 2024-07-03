@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import e, { Request, Response } from 'express';
 import { Fighter } from '../models/fighter';
 import { Fight } from '../models/fight';
 import { Fighter_Fight } from '../models/fighter_fight';
 import {  Op } from 'sequelize';
 import { Event } from '../models/event';
 import { Scorecard } from '../models/scorecard';
+import { Judge } from '../models/judge';
 
 interface FighterRequest extends Request {
     body: {
@@ -131,10 +132,10 @@ export const getFighterFullRecord = async (req: FighterRequest, res: Response): 
 };
 
 export const getFighterRecord = async (req: FighterRequest, res: Response): Promise<void> => {
-            
-            const fighterId: string = req.params.fighter_id;
         
             try {
+                const fighterId: string = req.params.fighter_id;
+
                 const fights: Fight[] = await Fight.findAll();
         
                 let wins:number = 0, losses:number = 0, draws:number = 0, noContests:number = 0;
@@ -153,8 +154,13 @@ export const getFighterRecord = async (req: FighterRequest, res: Response): Prom
         
                     }
                 });
-        
+                const totalFights = wins + losses + draws + noContests;
+                const fighter = await Fighter.findByPk(fighterId);
+                const fighterName = `${fighter?.first_name} ${fighter?.last_name} ${fighter?.nickname ?? ''}`;
+
                 res.json({
+                    fighterName,
+                    totalFights,
                     wins,
                     losses,
                     draws,
@@ -179,6 +185,31 @@ export const getFighterById = async (req: FighterRequest, res: Response): Promis
         res.json(fighter);
     } else {
         res.status(404).send('Fighter not found');
+    }
+};
+
+export const getAllJudgesofFighter = async (req: FighterRequest, res: Response): Promise<void> => {
+    const { fighter_id } = req.params;
+    
+    try {
+        const judges: Judge[] = await Judge.findAll({
+            include: [{
+                model: Scorecard,
+                where: { fighter_id: fighter_id },
+                attributes: []
+            }],
+            group: ['Judge.judge_id']
+        });
+
+        if (judges.length === 0) {
+            res.status(404).send('No judges found for this fighter');
+        } else {
+            const judgesName = judges.map(judge => `${judge.first_name} ${judge.last_name}`);
+            res.json(judgesName);
+        }
+    } catch (error) {
+        console.error('Error fetching judges:', error);
+        res.status(500).send('Internal Server Error');
     }
 };
 

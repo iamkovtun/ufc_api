@@ -22,11 +22,12 @@ import fighterFightRouter from './routes/fighterFightRouter'; // Import the new 
 import { associateModels } from './associations';
 
 
+let UPDATE_CONSTRAINS = false;
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-const sequelize = new Sequelize('postgres', 'postgres', '1111', {
+const sequelize = new Sequelize('newdb', 'postgres', '1111', {
     host: 'localhost',
     dialect: 'postgres',
     schema: 'UFC'
@@ -58,12 +59,13 @@ associateModels();
 
 
 // temp function to update scorecard constraints
+
 async function updateScorecardConstraints() {
     try {
         await sequelize.query('ALTER TABLE "UFC"."Scorecards" DROP CONSTRAINT IF EXISTS "Scorecards_fight_id_judge_id_key";');
         console.log('Old constraint dropped successfully.');
 
-        await sequelize.query('ALTER TABLE "UFC"."Scorecards" ADD CONSTRAINT "unique_fight_judge_fighter_v4" UNIQUE ("fight_id", "judge_id", "fighter_id");');
+        await sequelize.query('ALTER TABLE "UFC"."Scorecards" ADD CONSTRAINT "Scorecards_fight_id_judge_id_key" UNIQUE ("fight_id", "judge_id", "fighter_id");');
         console.log('New constraint added successfully.');
 
         console.log('Scorecard constraints updated successfully.');
@@ -72,8 +74,11 @@ async function updateScorecardConstraints() {
     }
 }
 
+
 app.listen(port, async () => {
     await sequelize.sync();
-    await updateScorecardConstraints();// temp function to update scorecard constraints
+    if (UPDATE_CONSTRAINS) {
+        await updateScorecardConstraints();// temp function to update scorecard constraints
+    }
     console.log(`Server is running on http://localhost:${port}`);
 });

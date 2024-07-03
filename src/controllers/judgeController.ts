@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { Judge } from '../models/judge';
+import {Fight} from '../models/fight';
+import {Scorecard} from '../models/scorecard';
 
 interface JudgeRequest extends Request {
     body: {
@@ -66,3 +68,24 @@ export const deleteJudge = async (req: JudgeRequest, res: Response): Promise<voi
         res.status(404).send('Judge not found');
     }
 };
+
+export const getAllFightsOfJudge = async (req: JudgeRequest, res: Response): Promise<void> => {
+    const { judge_id } = req.params;
+    const fights = await Fight.findAll({
+        include: [{
+            model: Scorecard,
+            required: true,
+            attributes: [],
+            include: [{
+                model: Judge,
+                where: { judge_id },
+                attributes: []
+            }]
+        }]
+    });
+    if (fights.length === 0) {
+        res.status(404).send('Fights not found');
+    } else {
+        res.json(fights);
+    }
+} 

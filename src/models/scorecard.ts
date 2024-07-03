@@ -51,14 +51,6 @@ export function initScorecardModel(sequelize: Sequelize) {
         {
             sequelize,
             modelName: 'Scorecard',
-            
-            indexes: [
-                {
-                    unique: true,
-                    fields: ['fight_id', 'judge_id', 'fighter_id'],
-                    name: 'unique_fight_judge_fighter_v3'
-                } //not working
-            ]
         }
     );
 }
