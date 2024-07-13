@@ -8,13 +8,8 @@ export class Fighter extends Model {
     declare birthdate: Date;
     declare nationality: string;
     declare height: number;
-    declare weight: number;
     declare reach: number;
     declare stance: string;
-    declare record_wins: number;
-    declare record_losses: number;
-    declare record_draws: number;
-    declare record_no_contests: number;
 }
 
 export function initFighterModel(sequelize: Sequelize) {
@@ -49,32 +44,12 @@ export function initFighterModel(sequelize: Sequelize) {
                 type: DataTypes.DECIMAL(5, 2),
                 allowNull: true,
             },
-            weight: {
-                type: DataTypes.DECIMAL(5, 2),
-                allowNull: true,
-            },
             reach: {
                 type: DataTypes.DECIMAL(5, 2),
                 allowNull: true,
             },
             stance: {
                 type: DataTypes.STRING(20),
-                allowNull: true,
-            },
-            record_wins: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-            },
-            record_losses: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-            },
-            record_draws: {
-                type: DataTypes.INTEGER,
-                allowNull: true,
-            },
-            record_no_contests: {
-                type: DataTypes.INTEGER,
                 allowNull: true,
             },
         },

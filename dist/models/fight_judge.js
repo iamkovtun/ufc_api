@@ -4,6 +4,7 @@ exports.initFight_JudgeModel = exports.Fight_Judge = void 0;
 const sequelize_1 = require("sequelize");
 const fight_1 = require("./fight");
 const judge_1 = require("./judge");
+const fighter_1 = require("./fighter");
 class Fight_Judge extends sequelize_1.Model {
 }
 exports.Fight_Judge = Fight_Judge;
@@ -27,18 +28,29 @@ function initFight_JudgeModel(sequelize) {
                 key: 'judge_id',
             },
         },
-        score_fighter1: {
+        fighter_id: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
+            primaryKey: true,
+            references: {
+                model: fighter_1.Fighter,
+                key: 'fighter_id',
+            },
         },
-        score_fighter2: {
+        score: {
             type: sequelize_1.DataTypes.INTEGER,
             allowNull: false,
         },
     }, {
         sequelize,
         modelName: 'Fight_Judge',
-        tableName: 'fight_judges', // optional: specify the table name
+        indexes: [
+            {
+                unique: true,
+                fields: ['fight_id', 'judge_id', 'fighter_id'],
+                name: 'Fight_Judges_fight_id_judge_id_fighter_id_key',
+            },
+        ]
     });
 }
 exports.initFight_JudgeModel = initFight_JudgeModel;

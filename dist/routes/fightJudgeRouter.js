@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const fight_judgeController_1 = require("../controllers/fight_judgeController");
+const router = (0, express_1.Router)();
+router.get('/', fight_judgeController_1.getAllFightJudges);
+router.get('/:fight_judge_id', fight_judgeController_1.getFightJudgeById);
+router.post('/', fight_judgeController_1.createFightJudge);
+router.put('/:fight_judge_id', fight_judgeController_1.updateFightJudge);
+router.delete('/:fight_judge_id', fight_judgeController_1.deleteFightJudge);
+exports.default = router;

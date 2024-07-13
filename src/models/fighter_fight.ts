@@ -1,16 +1,14 @@
 import { DataTypes, Model, Sequelize, ForeignKey } from 'sequelize';
 import { Fight } from './fight';
-import { Judge } from './judge';
+import { Fighter } from './fighter';
 
-export class Fight_Judge extends Model {
+export class Fighter_Fight extends Model {
     declare fight_id: ForeignKey<Fight['fight_id']>;
-    declare judge_id: ForeignKey<Judge['judge_id']>;
-    declare score_fighter1: number;
-    declare score_fighter2: number;
+    declare fighter_id: ForeignKey<Fighter['fighter_id']>;
 }
 
-export function initFight_JudgeModel(sequelize: Sequelize) {
-    Fight_Judge.init(
+export function initFighter_FightModel(sequelize: Sequelize) {
+    Fighter_Fight.init(
         {
             fight_id: {
                 type: DataTypes.INTEGER,
@@ -21,26 +19,18 @@ export function initFight_JudgeModel(sequelize: Sequelize) {
                     key: 'fight_id',
                 },
             },
-            judge_id: {
+            fighter_id: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 primaryKey: true,
                 references: {
-                    model: Judge,
-                    key: 'judge_id',
+                    model: Fighter,
+                    key: 'fighter_id',
                 },
-            },
-            score_fighter1: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
-            score_fighter2: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
             },
         },{
             sequelize,
-            modelName: 'Fight_Judge',
+            modelName: 'Fighter_Fight',
           });
 
 }
